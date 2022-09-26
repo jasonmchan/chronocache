@@ -83,6 +83,21 @@ public class Configuration {
 		return properties.getProperty("memcached.port");
 	}
 
+	public static String getRedisAddress() {
+		return properties.getProperty("redis.address");
+	}
+
+	public static int getRedisPort() {
+		String port = properties.getProperty("redis.port");
+		int portNumber = -1;
+		try {
+			portNumber = Integer.parseInt(port);
+		} catch (NumberFormatException e) {
+			logger.warn("{} could NOT be parsed to an Integer", portNumber);
+		}
+		return portNumber;
+	}
+
 	public static String[] getMemcachedServers() {
 		String num = properties.getProperty("memcached.servernum");
 		String[] serverAddr=new String[Integer.parseInt(num)];

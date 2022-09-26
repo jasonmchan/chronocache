@@ -136,13 +136,18 @@ public class DBImpl implements DB {
 		connMap = new ConcurrentHashMap<>();
 
 		// Initialize cache
-		logger.info( "Trying to connect to memcached..." );
+		// logger.info( "Trying to connect to memcached..." );
 		// Initialize memcached client
-		MemcachedClient memcachedClient = MemcachedClient.getInstance();
-		logger.info( "Memcached: connected" );
+		// MemcachedClient memcachedClient = MemcachedClient.getInstance();
+		// logger.info( "Memcached: connected" );
+		logger.info("Trying to connect to redis...");
+		RedisClient redisClient = new RedisClient();
+		logger.info( "Redis: connected" );
+
 		// Initialize Cassandra
 		logger.info( "Starting distributed cache handler.." );
-		cacheHandler = new InMemoryCacheHandler( memcachedClient );
+		cacheHandler = new InMemoryCacheHandler(redisClient);
+		// cacheHandler = new InMemoryCacheHandler(memcachedClient);
 		
 		versionVectorFactory = new VersionVectorFactory( Parameters.WORKLOAD_TYPE );
 		DB_EXEC_VERSION = versionVectorFactory.createDBVersionVector();
@@ -304,9 +309,9 @@ public class DBImpl implements DB {
 			return queryResult;
 		}
 
-		// Timestamp is an active timestamp in cassandra but has been evicted from memcached,
+		// Timestamp is an active timestamp in cassandra but has been evicted from query result cache,
 		// delete from cassandra to prevent this from happening again
-		logger.trace( "Client {}: result no longer in memcached, deleting stale timestamp", clientId );
+		logger.trace( "Client {}: result no longer in query result cache, deleting stale timestamp", clientId );
 		cacheHandler.deleteStaleVersion( query.getCacheKey(), version );
 
 		return null;
@@ -596,9 +601,9 @@ public class DBImpl implements DB {
 		if( queryResult != null ) {
 			boolean success = cacheHandler.cacheResult( query.getCacheKey(), query.getTables(), queryResult );
 			if( success ) {
-				logger.debug( "Result for query:{} is stored on memcached", query.getCacheKey() );
+				logger.debug( "Result for query:{} is stored on query result cache", query.getCacheKey() );
 			} else {
-				logger.warn( "!!!Result for query:{} is NOT stored on memcached", query.getCacheKey() );
+				logger.warn( "!!!Result for query:{} is NOT stored on query result cache", query.getCacheKey() );
 			}
 
 		}
