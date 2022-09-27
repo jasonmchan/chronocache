@@ -49,6 +49,8 @@ public class VersionVectorFactory {
 			return new WIKIVersionVector();
 		} else if( wl == WorkloadType.SEATS ) {
 			return new SEATSVersionVector();
+		} else if (wl == WorkloadType.SMALLBANK) {
+			return new SmallBankVersionVector();
 		} else {
 			return new AuctionMarkVersionVector();
 		}
@@ -69,6 +71,8 @@ public class VersionVectorFactory {
 			numRelations = WIKIVersionVector.relationIndexes.size();
 		} else if( wl == WorkloadType.SEATS ) {
 			numRelations = SEATSVersionVector.relationIndexes.size();
+		} else if ( wl == WorkloadType.SMALLBANK) {
+			numRelations = SmallBankVersionVector.relationIndexes.size();
 		} else {
 			numRelations = AuctionMarkVersionVector.relationIndexes.size();
 		}
@@ -87,6 +91,8 @@ public class VersionVectorFactory {
 			return WIKIVersionVector.relationIndexes.get( relation );
 		} else if( wl == WorkloadType.SEATS ) {
 			return SEATSVersionVector.relationIndexes.get( relation );
+		} else if( wl == WorkloadType.SMALLBANK ) {
+			return SmallBankVersionVector.relationIndexes.get( relation );
 		} else {
 			return AuctionMarkVersionVector.relationIndexes.get( relation );
 		}
@@ -107,6 +113,8 @@ public class VersionVectorFactory {
 			indexToRelation = WIKIVersionVector.indexToRelation;
 		} else if( wl == WorkloadType.SEATS ) {
 			indexToRelation = SEATSVersionVector.indexToRelation;
+		} else if( wl == WorkloadType.SMALLBANK ) {
+			indexToRelation = SmallBankVersionVector.indexToRelation;
 		} else {
 			indexToRelation = AuctionMarkVersionVector.indexToRelation;
 		}
@@ -195,6 +203,8 @@ public class VersionVectorFactory {
 			relationIndexes = WIKIVersionVector.relationIndexes;
 		} else if( wl == WorkloadType.SEATS ) {
 			relationIndexes = SEATSVersionVector.relationIndexes;
+		} else if (wl == WorkloadType.SMALLBANK ) {
+			relationIndexes = SEATSVersionVector.relationIndexes;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 		}
@@ -233,6 +243,9 @@ public class VersionVectorFactory {
 		} else if( wl == WorkloadType.SEATS ) {
 			relationIndexes = SEATSVersionVector.relationIndexes;
 			indexToRelation = SEATSVersionVector.indexToRelation;
+		} else if( wl == WorkloadType.SMALLBANK ) {
+			relationIndexes = SmallBankVersionVector.relationIndexes;
+			indexToRelation = SmallBankVersionVector.indexToRelation;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 			indexToRelation = AuctionMarkVersionVector.indexToRelation;
@@ -266,6 +279,8 @@ public class VersionVectorFactory {
 			relationIndexes = WIKIVersionVector.relationIndexes;
 		} else if( wl == WorkloadType.SEATS ) {
 			relationIndexes = SEATSVersionVector.relationIndexes;
+		} else if( wl == WorkloadType.SMALLBANK ) {
+			relationIndexes = SmallBankVersionVector.relationIndexes;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 		}
@@ -304,6 +319,9 @@ public class VersionVectorFactory {
 		} else if( wl == WorkloadType.SEATS ) {
 			relationIndexes = SEATSVersionVector.relationIndexes;
 			indexToRelation = SEATSVersionVector.indexToRelation;
+		} else if( wl == WorkloadType.SMALLBANK ) {
+			relationIndexes = SmallBankVersionVector.relationIndexes;
+			indexToRelation = SmallBankVersionVector.indexToRelation;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 			indexToRelation = AuctionMarkVersionVector.indexToRelation;
@@ -351,6 +369,8 @@ public class VersionVectorFactory {
 			return new WIKIRelationVersionTable();
 		} else if( wl == WorkloadType.SEATS ) {
 			return new SEATSRelationVersionTable();
+		} else if( wl == WorkloadType.SMALLBANK ) {
+			return new SmallBankRelationVersionTable();
 		} else {
 			return new AuctionMarkRelationVersionTable();
 		}

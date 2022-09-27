@@ -6,5 +6,6 @@ public enum WorkloadType {
 	TPCE,
 	WIKI,
 	SEATS,
-	AUCTIONMARK
+	AUCTIONMARK,
+	SMALLBANK
 }

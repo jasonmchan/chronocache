@@ -190,8 +190,8 @@ public class SimpleQueryVectorizer extends QueryVectorizer {
 			for( String uncontainedCondition : uncontainedConditions ) {
 				logger.trace( "Trying to replace {} with null", uncontainedCondition );
 				//Order here is important --- only one of these will succeed
-				suffix = suffix.replaceFirst( uncontainedCondition + " +AND", "" ); // I am not the last condition
-				suffix = suffix.replaceFirst( "AND +" + uncontainedCondition, "" ); // I am the last condition
+				suffix = suffix.replaceFirst( uncontainedCondition + "\\s*AND", "" ); // I am not the last condition
+				suffix = suffix.replaceFirst( "AND\\s*" + uncontainedCondition, "" ); // I am the last condition
 				suffix = suffix.replaceFirst( uncontainedCondition, "" ); // I am the only condition
 			}
 
