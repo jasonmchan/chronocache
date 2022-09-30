@@ -51,6 +51,8 @@ public class VersionVectorFactory {
 			return new SEATSVersionVector();
 		} else if (wl == WorkloadType.SMALLBANK) {
 			return new SmallBankVersionVector();
+		} else if (wl == WorkloadType.TAOBENCH) {
+			return new TaobenchVersionVector();
 		} else {
 			return new AuctionMarkVersionVector();
 		}
@@ -73,6 +75,8 @@ public class VersionVectorFactory {
 			numRelations = SEATSVersionVector.relationIndexes.size();
 		} else if ( wl == WorkloadType.SMALLBANK) {
 			numRelations = SmallBankVersionVector.relationIndexes.size();
+		} else if ( wl == WorkloadType.TAOBENCH) {
+			numRelations = TaobenchVersionVector.relationIndexes.size();
 		} else {
 			numRelations = AuctionMarkVersionVector.relationIndexes.size();
 		}
@@ -93,6 +97,8 @@ public class VersionVectorFactory {
 			return SEATSVersionVector.relationIndexes.get( relation );
 		} else if( wl == WorkloadType.SMALLBANK ) {
 			return SmallBankVersionVector.relationIndexes.get( relation );
+		} else if( wl == WorkloadType.TAOBENCH ) {
+			return TaobenchVersionVector.relationIndexes.get( relation );
 		} else {
 			return AuctionMarkVersionVector.relationIndexes.get( relation );
 		}
@@ -115,6 +121,8 @@ public class VersionVectorFactory {
 			indexToRelation = SEATSVersionVector.indexToRelation;
 		} else if( wl == WorkloadType.SMALLBANK ) {
 			indexToRelation = SmallBankVersionVector.indexToRelation;
+		} else if( wl == WorkloadType.TAOBENCH ) {
+			indexToRelation = TaobenchVersionVector.indexToRelation;
 		} else {
 			indexToRelation = AuctionMarkVersionVector.indexToRelation;
 		}
@@ -205,6 +213,8 @@ public class VersionVectorFactory {
 			relationIndexes = SEATSVersionVector.relationIndexes;
 		} else if (wl == WorkloadType.SMALLBANK ) {
 			relationIndexes = SmallBankVersionVector.relationIndexes;
+		} else if (wl == WorkloadType.TAOBENCH ) {
+			relationIndexes = TaobenchVersionVector.relationIndexes;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 		}
@@ -246,6 +256,9 @@ public class VersionVectorFactory {
 		} else if( wl == WorkloadType.SMALLBANK ) {
 			relationIndexes = SmallBankVersionVector.relationIndexes;
 			indexToRelation = SmallBankVersionVector.indexToRelation;
+		} else if( wl == WorkloadType.TAOBENCH ) {
+			relationIndexes = TaobenchVersionVector.relationIndexes;
+			indexToRelation = TaobenchVersionVector.indexToRelation;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 			indexToRelation = AuctionMarkVersionVector.indexToRelation;
@@ -281,6 +294,8 @@ public class VersionVectorFactory {
 			relationIndexes = SEATSVersionVector.relationIndexes;
 		} else if( wl == WorkloadType.SMALLBANK ) {
 			relationIndexes = SmallBankVersionVector.relationIndexes;
+		} else if( wl == WorkloadType.TAOBENCH ) {
+			relationIndexes = TaobenchVersionVector.relationIndexes;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 		}
@@ -322,6 +337,9 @@ public class VersionVectorFactory {
 		} else if( wl == WorkloadType.SMALLBANK ) {
 			relationIndexes = SmallBankVersionVector.relationIndexes;
 			indexToRelation = SmallBankVersionVector.indexToRelation;
+		} else if( wl == WorkloadType.TAOBENCH ) {
+			relationIndexes = TaobenchVersionVector.relationIndexes;
+			indexToRelation = TaobenchVersionVector.indexToRelation;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 			indexToRelation = AuctionMarkVersionVector.indexToRelation;
@@ -371,6 +389,8 @@ public class VersionVectorFactory {
 			return new SEATSRelationVersionTable();
 		} else if( wl == WorkloadType.SMALLBANK ) {
 			return new SmallBankRelationVersionTable();
+		} else if( wl == WorkloadType.TAOBENCH ) {
+			return new TaobenchRelationVersionTable();
 		} else {
 			return new AuctionMarkRelationVersionTable();
 		}

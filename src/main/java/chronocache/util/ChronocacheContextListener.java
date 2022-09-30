@@ -21,7 +21,7 @@ public class ChronocacheContextListener implements ServletContextListener {
 
 		try {
 			logger.info("Beginning ChronoCache initialization");
-			db.query(1, "select * from customer LIMIT 1");
+			db.query(1, "select 1");
 			logger.info("ChronoCache is succesfully initialized");
 		} catch (DBException e) {
 			logger.error("ChronoCache could NOT be initialized");

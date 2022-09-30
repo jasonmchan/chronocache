@@ -7,5 +7,6 @@ public enum WorkloadType {
 	WIKI,
 	SEATS,
 	AUCTIONMARK,
-	SMALLBANK
+	SMALLBANK,
+	TAOBENCH
 }
