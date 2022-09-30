@@ -2,6 +2,9 @@ package chronocache.db;
 
 import chronocache.core.qry.QueryResult;
 import com.google.gson.Gson;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import redis.clients.jedis.Connection;
+import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisPooled;
 import chronocache.util.Configuration;
 
@@ -13,7 +16,11 @@ public class RedisClient implements QueryResultCache {
     private Gson gson;
 
     public RedisClient() {
-        this.pooled = new JedisPooled(Configuration.getRedisAddress(), Configuration.getRedisPort());
+        GenericObjectPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(1000);
+        jedisPoolConfig.setMaxIdle(1000);
+        jedisPoolConfig.setMinIdle(10);
+        this.pooled = new JedisPooled(jedisPoolConfig, Configuration.getRedisAddress(), Configuration.getRedisPort());
         this.gson = new Gson();
     }
 
