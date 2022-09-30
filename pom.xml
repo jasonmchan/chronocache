@@ -177,6 +177,7 @@
 					<webApp>
 						<contextPath>/chronocache</contextPath>
 					</webApp>
+					<jettyXmls>jetty.xml</jettyXmls>
 				</configuration>
 			</plugin>
 			<plugin>
