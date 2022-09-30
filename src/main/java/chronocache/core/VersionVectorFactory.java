@@ -204,7 +204,7 @@ public class VersionVectorFactory {
 		} else if( wl == WorkloadType.SEATS ) {
 			relationIndexes = SEATSVersionVector.relationIndexes;
 		} else if (wl == WorkloadType.SMALLBANK ) {
-			relationIndexes = SEATSVersionVector.relationIndexes;
+			relationIndexes = SmallBankVersionVector.relationIndexes;
 		} else {
 			relationIndexes = AuctionMarkVersionVector.relationIndexes;
 		}
