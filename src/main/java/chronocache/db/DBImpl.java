@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,19 +19,14 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.ReentrantLock;
 
-import com.datastax.driver.core.*;
-import com.datastax.driver.core.exceptions.*;
-
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.joda.time.DateTime;
-import org.postgresql.ds.PGPoolingDataSource;
 import org.mariadb.jdbc.MariaDbPoolDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.misc.ParseCancellationException;
 
 import chronocache.core.InMemoryCacheHandler;
@@ -45,10 +38,7 @@ import chronocache.core.VersionVector;
 import chronocache.core.VersionVectorFactory;
 import chronocache.core.future.ResultBox;
 import chronocache.core.future.ResultRegistration;
-import chronocache.core.parser.ParserPool;
 import chronocache.core.parser.AntlrParser;
-import chronocache.core.parser.AntlrQueryMetadata;
-import chronocache.core.parser.AntlrQueryType;
 import chronocache.core.qry.ExecutedQuery;
 import chronocache.core.qry.Query;
 import chronocache.core.qry.QueryResult;
@@ -56,7 +46,6 @@ import chronocache.core.Parameters;
 import chronocache.core.fido.Trainer;
 import chronocache.util.Configuration;
 import chronocache.util.ResultSetConverter;
-import chronocache.util.MapUtil;
 
 /**
  *
@@ -79,7 +68,7 @@ public class DBImpl implements DB {
 	private CacheHandler cacheHandler;
 
 	private AtomicInteger cacheHitCounter;
-	private AtomicInteger cacheMissCounter;
+	private AtomicInteger cacheTotalCounter;
 
 	protected ExecutorService asyncExecutor;
 
@@ -156,7 +145,7 @@ public class DBImpl implements DB {
 
 		// Cache hit-miss counters
 		cacheHitCounter = new AtomicInteger( 0 );
-		cacheMissCounter = new AtomicInteger( 0 );
+		cacheTotalCounter = new AtomicInteger( 0 );
 	}
 
 	public int getCacheHits() {
@@ -164,7 +153,7 @@ public class DBImpl implements DB {
 	}
 
 	public int getCacheMiss() {
-		return cacheMissCounter.get();
+		return cacheTotalCounter.get();
 	}
 
 	/**
@@ -502,7 +491,6 @@ public class DBImpl implements DB {
 	 * Execute the provided queryString for the client, feeding the results back into the client
 	 */
 	public QueryResult query( long clientId, String queryString, VersionVector version, AntlrParser parser, boolean shouldGetNumColumns ) throws DBException {
-
 		logger.info( "Executing \"{}\" against DB!", queryString );
 		QueryResult queryResult;
 		Query query = null;
@@ -529,6 +517,11 @@ public class DBImpl implements DB {
 		}
 
 		long clockStart = System.nanoTime() / 1000;
+		if (clockStart % 500 == 0) {
+			System.out.println("Cache hits:" + this.cacheHitCounter.get());
+			System.out.println("Cache total:" + this.cacheTotalCounter.get());
+		}
+		this.cacheTotalCounter.incrementAndGet();
 
 		// If we need to get query metadata, run against the database directly
 		// Retrieving from caching and grabbing other's SelectLists won't let us compute this
@@ -571,6 +564,7 @@ public class DBImpl implements DB {
 			} else {
 				logger.info( "Just put query result in cache: \"{}\"", queryString );
 			}
+			this.cacheHitCounter.incrementAndGet();
 			informEngineOfResult( clientId, ( System.nanoTime() / 1000 - queryRespStart ), queryResult, query, queryString );
 			return queryResult;
 		} else {
