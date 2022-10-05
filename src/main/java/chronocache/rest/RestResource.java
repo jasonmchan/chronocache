@@ -2,11 +2,7 @@ package chronocache.rest;
 
 import java.io.*;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -27,6 +23,20 @@ public class RestResource {
 	private static Logger logger = LoggerFactory.getLogger( RestResource.class );
 	private static final ObjectMapper mapper = new ObjectMapper();
 	private static final DB db = new DBFactory().getDBInstance( DBFactory.DBType.REAL_DB );
+
+	@POST
+	public Response resetCacheStats() {
+		db.resetCacheStats();
+		return Response.ok().build();
+	}
+
+	@GET
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response getCacheStats() {
+		int hits = db.getCacheHits();
+		int miss = db.getCacheMiss();
+		return Response.ok(String.format("Hits: %d, Misses: %d", hits, miss) ).build();
+	}
 
 	@POST
 	@Path("/{terminalID}")

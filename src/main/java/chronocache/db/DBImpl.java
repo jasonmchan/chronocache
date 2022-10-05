@@ -68,7 +68,7 @@ public class DBImpl implements DB {
 	private CacheHandler cacheHandler;
 
 	private AtomicInteger cacheHitCounter;
-	private AtomicInteger cacheTotalCounter;
+	private AtomicInteger cacheMissCounter;
 
 	protected ExecutorService asyncExecutor;
 
@@ -145,7 +145,12 @@ public class DBImpl implements DB {
 
 		// Cache hit-miss counters
 		cacheHitCounter = new AtomicInteger( 0 );
-		cacheTotalCounter = new AtomicInteger( 0 );
+		cacheMissCounter = new AtomicInteger( 0 );
+	}
+
+	public void resetCacheStats() {
+		cacheHitCounter.set(0);
+		cacheMissCounter.set(0);
 	}
 
 	public int getCacheHits() {
@@ -153,7 +158,7 @@ public class DBImpl implements DB {
 	}
 
 	public int getCacheMiss() {
-		return cacheTotalCounter.get();
+		return cacheMissCounter.get();
 	}
 
 	/**
@@ -517,11 +522,6 @@ public class DBImpl implements DB {
 		}
 
 		long clockStart = System.nanoTime() / 1000;
-		if (clockStart % 500 == 0) {
-			System.out.println("Cache hits:" + this.cacheHitCounter.get());
-			System.out.println("Cache total:" + this.cacheTotalCounter.get());
-		}
-		this.cacheTotalCounter.incrementAndGet();
 
 		// If we need to get query metadata, run against the database directly
 		// Retrieving from caching and grabbing other's SelectLists won't let us compute this
@@ -584,6 +584,8 @@ public class DBImpl implements DB {
 
 		// No running queries
 		logger.debug( "client {} found no running queries, going to query DB.", clientId );
+
+		this.cacheMissCounter.incrementAndGet();
 
 		// Query is not already running or cached so we will lead execution against the db
 		waitingVersions.add( DB_EXEC_VERSION );

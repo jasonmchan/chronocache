@@ -17,6 +17,9 @@ import chronocache.core.CacheHandler;
 public interface DB {
 	public int getCacheHits();
 	public int getCacheMiss();
+	public default void resetCacheStats() {
+		return;
+	}
 
 	public QueryResult query( long clientId, String queryString ) throws DBException;
 	public QueryResult query( long clientId, String queryString, boolean shouldGetNumColumns ) throws DBException;
