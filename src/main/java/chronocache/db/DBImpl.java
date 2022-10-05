@@ -718,7 +718,14 @@ public class DBImpl implements DB {
 			conn = getClientConn( clientId );
 			result = conn.createStatement().executeUpdate( query );
 		} catch( SQLException e ) {
-			throw e;
+			// This is a hack for TAOBench. The parser doesn't know how to handle
+			// ON CONFLICT, so we'll just do the insert and ignore the uniqueness violation.
+			if (!e.getMessage().contains("duplicate key value violates unique constraint")
+					|| !e.getMessage().contains("objects_pkey")) {
+				throw e;
+			} else {
+				result = 1;
+			}
 		} finally {
 			dbPool.returnConn( conn );
 		}
