@@ -553,7 +553,7 @@ public class DBImpl implements DB {
 		logger.trace( "Client {}'s version is {}", clientId, clientVersion );
 
 		queryResult = searchAllActiveVersionsForCachedResult( clientId, cacheHandler, version, query, queryString, waitingVersions, clockStart );
-		
+
 		// Early exit for cached queries
 		if( queryResult != null ) {
 			VersionVector queryResultVersion = queryResult.getResultVersion();
@@ -565,6 +565,7 @@ public class DBImpl implements DB {
 				logger.info( "Just put query result in cache: \"{}\"", queryString );
 			}
 			this.cacheHitCounter.incrementAndGet();
+			queryResult.announceCached();
 			informEngineOfResult( clientId, ( System.nanoTime() / 1000 - queryRespStart ), queryResult, query, queryString );
 			return queryResult;
 		} else {

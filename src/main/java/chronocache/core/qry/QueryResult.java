@@ -1,5 +1,6 @@
 package chronocache.core.qry;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class QueryResult {
 	private VersionVector resultVersion;
 	private Integer numColumns;
 	private Map<QueryIdentifier, Integer> lastMappingPos;
+	private boolean cached;
 
 
 	public QueryResult( List<Map<String, Object>> result, VersionVector resultVersion ) {
@@ -52,11 +54,22 @@ public class QueryResult {
 		return new QueryResult( qr.selectResult, qr.resultVersion, qr.numColumns );
 	}
 
+	public void announceCached() {
+		this.cached = true;
+	}
+
 	public boolean isSelect() {
 		return resultType.equals( Type.SELECT );
 	}
 
 	public List<Map<String, Object>> getSelectResult() {
+		return selectResult;
+	}
+
+	public List<Map<String, Object>> getSelectResultWithCachingInfo() {
+		if (cached && selectResult.size() > 0) {
+			selectResult.get(0).put("CACHE_HIT", true);
+		}
 		return selectResult;
 	}
 

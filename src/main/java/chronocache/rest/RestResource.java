@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import chronocache.core.qry.QueryResult;
 import chronocache.db.DB;
 import chronocache.db.DBFactory;
-import chronocache.db.DBException;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
@@ -62,7 +61,7 @@ public class RestResource {
 		}
 		if( result.isSelect() ) {
 			logger.info( "Returning rest ok" );
-			return Response.ok( result.getSelectResult() ).build();
+			return Response.ok(result.getSelectResultWithCachingInfo()).build();
 		} else {
 			logger.info( "Returning rest ok" );
 			// then it means it is an update result - just an integer
