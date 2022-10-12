@@ -67,7 +67,10 @@ public class QueryResult {
 	}
 
 	public List<Map<String, Object>> getSelectResultWithCachingInfo() {
-		if (cached && selectResult.size() > 0) {
+		if (cached) {
+			if (selectResult.isEmpty()) {
+				selectResult.add(new HashMap<>());
+			}
 			selectResult.get(0).put("CACHE_HIT", true);
 		}
 		return selectResult;
