@@ -8,5 +8,6 @@ public enum WorkloadType {
 	SEATS,
 	AUCTIONMARK,
 	SMALLBANK,
-	TAOBENCH
+	TAOBENCH,
+	EPINIONS,
 }
